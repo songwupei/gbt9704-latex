@@ -1,0 +1,88 @@
+% !TeX program = xelatex
+\documentclass[redline, titleindent]{gbt9704}
+\usepackage{hyperref}
+\title{\texttt{gbt9704} 宏包使用说明 \\ (v0.1 Beta)}
+\author{Wupei Song \\ \small{\url{songwupei@163.com}}}
+\date{2026年6月22日}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{概述}
+本宏包 \texttt{gbt9704} 基于 \texttt{memoir} 文档类，严格遵循 \textbf{GB/T 9704-2012}《党政机关公文格式》标准，实现了红头文件、标题分级、附件、版记等公文的自动化排版。
+
+当前版本为 \textbf{Beta (v0.1)}，核心功能已可用，欢迎反馈问题与改进建议。
+
+\section{编译方式}
+本宏包依赖 \texttt{ctex} 宏包处理中文，必须使用 \textbf{XeLaTeX} 引擎编译：
+\begin{verbatim}
+xelatex gbt9704-doc.tex
+\end{verbatim}
+
+\section{宏包选项}
+\begin{description}
+  \item[redline] 在公文红头下方绘制红色分隔线。
+  \item[noredline] 不绘制红色分隔线（默认）。
+  \item[titleindent] 章节标题首行缩进2字符（默认，符合国标）。
+  \item[notitleindent] 章节标题取消首行缩进。
+\end{description}
+
+\section{核心命令示例}
+
+\subsection{标题与正文}
+使用 \verb|\title{...}| 和 \verb|\maketitle| 输出大标题（二号大标宋，居中）：
+\verb|\gongwensubtitle{...}| 可输出副标题（三号仿宋，居中）。
+
+正文环境自动设置为三号仿宋、28磅行距、首行缩进2字符。
+
+\subsection{附件处理}
+单附件使用 \verb|\attachmentHZ{文件名}|（自动带"附件："前缀）：
+\attachmentHZ{2026年度工作计划表}
+
+如需不带前缀，使用 \verb|\attachmentNOHZ{...}|。
+
+多附件使用 \texttt{attachments} 环境（首项紧跟"附件："，后续项自动对齐）：
+\begin{attachments}
+\attachmentitem{1. 财务报表附件}
+\attachmentitem{2. 人员名单附件}
+\attachmentitem{3. 会议纪要附件}
+\end{attachments}
+
+\subsection{发文机关与日期}
+\signature{中华人民共和国某部}
+\signdate{2026年6月22日}
+
+\subsection{版记要素}
+\seprule
+\copyto{各省、自治区、直辖市人民政府办公厅，国务院各部委。}
+\issueinfo{某部办公厅}{2026年6月22日印发}
+
+\subsection{附注}
+\notes{此件公开发布}
+
+\section{字体依赖说明}
+若系统未安装"方正大标宋（FZDaBiaoSong-B06）"字体，宏包将自动回退至"黑体（SimHei）"并启用伪粗体，编译时会在终端显示警告信息，但不影响红头排版效果。
+
+建议安装方正大标宋以获得最佳视觉效果。
+
+\section{已知问题与限制}
+\begin{itemize}
+  \item 当前为 Beta 版本，命令名称和接口可能在后续版本中调整。
+  \item 仅支持 XeLaTeX 引擎，不支持 pdfLaTeX。
+  \item 对超长标题（超过一行）的自动换行处理有待优化。
+\end{itemize}
+
+\section{许可证}
+本宏包采用 \textbf{LPPL-1.3c} 许可证发布。
+
+\section{反馈与贡献}
+欢迎通过以下方式提交问题或改进建议：
+\begin{itemize}
+  \item Issue: \url{https://codeberg.org/songwupei/latex-gbt9704/issues}
+  \item 邮箱: \url{songwupei@163.com}
+\end{itemize}
+
+\end{document}
