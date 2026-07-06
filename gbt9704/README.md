@@ -1,8 +1,7 @@
 Package: gbt9704
-Version: 0.1 (Beta)
-Date: 2026-06-22
+Version: 0.1.1
+Date: 2026-07-06
 License: LPPL-1.3c
-Status: Beta - Feedback welcome
 
 ========================================
 LaTeX Class for GB/T 9704-2012
@@ -24,18 +23,24 @@ REQUIREMENTS
   - FZDaBiaoSong-B06 (FangZheng DaBiaoSong) for red headers.
     If not installed, the class will automatically fall back
     to SimHei with fake bold, with a warning message.
+* Optional: zhlineskip (2026/06/30+) for CJK-aware line spacing
+  control with independent bodytext/footnote/math leading.
+  Install via: tlmgr install zhlineskip
 
 OPTIONS
 -------
-* redline / noredline : Enable/disable red separator line under header.
-  (Default: noredline)
+* redline / noredline : Enable/disable red separator line under
+  the red header. (Default: noredline)
 * titleindent / notitleindent : Enable/disable first-line indentation
   for section titles. (Default: titleindent, complying with standard)
+* zhlineskip : Enable zhlineskip package for CJK-aware proportional
+  line spacing. Sets bodytextleadingratio=1.75 (28pt/16pt) and
+  restores Western math leading. (Default: off)
 
 USAGE EXAMPLE
 -------------
-\documentclass[redline]{gbt9704}
-\title{国务院关于XXX的通知}
+\documentclass[redline,zhlineskip]{gbt9704}
+\title{文件标题}
 \begin{document}
 \maketitle
 \section{一、总体要求}
@@ -45,18 +50,28 @@ USAGE EXAMPLE
 
 MAIN COMMANDS
 -------------
-* \gongwentitle{...}   - Main title (No.2 DaBiaoSong, centered)
-* \gongwensubtitle{...}- Subtitle (No.3 FangSong, centered)
-* \mainreceiver{...}   - Main receiver (left-aligned, No.3 FangSong)
-* \attachmentHZ{...}   - Single attachment (with "附件：" prefix)
-* \attachmentNOHZ{...} - Single attachment (without prefix)
+* \gongwentitle{...}     - Main title (No.2 DaBiaoSong, centered)
+* \gongwensubtitle{...}  - Subtitle (No.3 FangSong, centered)
+* \makeheader{Org}{Num}{Sig} - Red header with issuing organ,
+                           document number, and signatory
+* \mainreceiver{...}     - Main receiver (left-aligned, no indent)
+* \attachmentHZ{...}     - Single attachment (with "附件：" prefix,
+                           2-character indent)
+* \attachmentNOHZ{...}   - Single attachment (without prefix,
+                           5-character indent, aligned with first)
 * attachments environment - Multiple attachments with \attachmentitem
-* \signature{...}      - Signature (right-aligned)
-* \signdate{...}       - Date (right-aligned)
-* \copyto{...}         - CC list
-* \issueinfo{Org}{Date}- Issuing organ and date
-* \seprule             - Separator line for page footer area
-* \notes{...}          - Notes in parentheses
+* \signature{...}        - Signature (right-aligned, 2-char indent)
+* \signdate{...}         - Date (right-aligned, 2-char indent)
+* \notes{...}            - Notes in parentheses (no indent)
+* \copyto{...}           - CC list (no indent, "抄送：" prefix)
+* \issueinfo{Org}{Date}  - Issuing organ and date (left+right)
+* \seprule               - Separator line for page footer area
+
+HEADING FORMATS (GB/T 9704-2012)
+---------------------------------
+* Heading 1 (一、): SimHei (黑体), No.3, 2-char indent
+* Heading 2 (（一）): KaiTi bold (楷体加粗), No.3, 2-char indent
+* Heading 3 (1.): FangSong bold (仿宋加粗), No.3, 2-char indent
 
 RECOMMENDED COMPANION PACKAGES
 ------------------------------
@@ -70,10 +85,12 @@ The following packages are recommended for use with gbt9704
   Note: fcolumn uses European input format (, as decimal).
   For Chinese .-decimal input, consider siunitx as an alternative.
 
+* zhlineskip (2026/06/30+) — CJK-aware proportional line spacing
+  with independent bodytext/footnote/math leading control.
+  Built-in support via the zhlineskip class option.
+
 KNOWN ISSUES / LIMITATIONS
 --------------------------
-* This is a Beta release. Command names and interfaces may change
-  in future versions based on user feedback.
 * The class relies on XeLaTeX; pdflatex is not supported due to
   font encoding requirements.
 
@@ -94,6 +111,14 @@ or email: songwupei@163.com
 
 CHANGELOG
 ---------
+v0.1.1 (2026-07-06) - Feature update.
+- Add zhlineskip class option for CJK-aware proportional line spacing
+  (bodytextleadingratio=1.75, footnoteleadingratio=1.75,
+   restoremathleading).
+- H2 (subsection): 楷体加粗 (\kaishu\bfseries).
+- H3 (subsubsection): 仿宋加粗 (\normalfont\bfseries).
+- \signature and \signdate: add 2-character right indent.
+
 v0.1 (2026-06-22) - Initial Beta release.
 - Core functionality for GB/T 9704-2012 compliance.
 - Font fallback mechanism for FZDaBiaoSong.

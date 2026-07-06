@@ -1,11 +1,11 @@
 % !TeX program = xelatex
-\documentclass[redline, titleindent]{gbt9704}
+\documentclass[redline, titleindent, zhlineskip]{gbt9704}
 \usepackage{hyperref}
 \usepackage[strict]{fcolumn}
 \newcolumntype{Y}{F.,{3,2}{}}
-\title{\texttt{gbt9704} 宏包使用说明 \\ (v0.1 Beta)}
+\title{\texttt{gbt9704} 宏包使用说明 \\ (v0.1.1)}
 \author{Wupei Song \\ \small{\url{songwupei@163.com}}}
-\date{2026年6月22日}
+\date{2026年7月6日}
 
 \begin{document}
 
@@ -16,7 +16,7 @@
 \section{概述}
 本宏包 \texttt{gbt9704} 基于 \texttt{memoir} 文档类，严格遵循 \textbf{GB/T 9704-2012}《党政机关公文格式》标准，实现了红头文件、标题分级、附件、版记等公文的自动化排版。
 
-当前版本为 \textbf{Beta (v0.1)}，核心功能已可用，欢迎反馈问题与改进建议。
+当前版本为 \textbf{v0.1.1}，核心功能已可用，欢迎反馈问题与改进建议。
 
 \section{编译方式}
 本宏包依赖 \texttt{ctex} 宏包处理中文，必须使用 \textbf{XeLaTeX} 引擎编译：
@@ -30,6 +30,7 @@ xelatex gbt9704-doc.tex
   \item[noredline] 不绘制红色分隔线（默认）。
   \item[titleindent] 章节标题首行缩进2字符（默认，符合国标）。
   \item[notitleindent] 章节标题取消首行缩进。
+  \item[zhlineskip] 启用 \texttt{zhlineskip} 宏包，提供 CJK 感知的比例行距控制（正文 1.75 倍字号、脚注独立比例、数学恢复西文行距）。需 TeX Live 2026 或手动安装。
 \end{description}
 
 \section{核心命令示例}
