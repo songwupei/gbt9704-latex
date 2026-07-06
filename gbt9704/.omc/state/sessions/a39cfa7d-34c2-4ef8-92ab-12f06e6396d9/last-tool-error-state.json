@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"ls /home/song/NutstoreFiles/projects/latex-ctan-gbt9704/gbt9704/*.aux /home/song/NutstoreFiles/projects/latex-ctan-gbt9704/gbt9704/*.log /home/song/NutstoreFiles/projects/latex-ctan-gbt970...",
-  "error": "Exit code 1\n(eval):1: no matches found: /home/song/NutstoreFiles/projects/latex-ctan-gbt9704/gbt9704/*.aux",
-  "timestamp": "2026-06-22T13:23:02.657Z",
-  "retry_count": 1
-}

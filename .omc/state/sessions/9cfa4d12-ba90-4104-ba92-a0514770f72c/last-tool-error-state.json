@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"git branch -m master main && git push -u origin main && git push origin --delete master\",\"timeout\":30000,\"description\":\"Rename master to main and push\"}",
-  "error": "Exit code 1\nremote: \nremote: Create a new pull request for 'main':        \nremote:   https://codeberg.org/songwupei/latex-gbt9704/compare/master...main        \nremote: \nTo ssh://codeberg.org/songwupei/latex-gbt9704.git\n * [new branch]      main -> main\n分支 'main' 设置为跟踪 'origin/main'。\nremote: \nremote: Forgejo: branch master is the default branch and cannot be deleted        \nremote: \nTo ssh://codeberg.org/songwupei/latex-gbt9704.git\n ! [remote rejected] master (pre-receive hook declined)\n错误：无法推送一些...",
-  "timestamp": "2026-06-23T00:49:33.343Z",
-  "retry_count": 1
-}

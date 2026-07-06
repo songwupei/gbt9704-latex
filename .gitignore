@@ -1,0 +1,7 @@
+.omc/
+*.aux
+*.log
+*.out
+*.toc
+issue
+roadmap
