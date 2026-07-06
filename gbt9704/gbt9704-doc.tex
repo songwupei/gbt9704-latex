@@ -1,6 +1,8 @@
 % !TeX program = xelatex
 \documentclass[redline, titleindent]{gbt9704}
 \usepackage{hyperref}
+\usepackage[strict]{fcolumn}
+\newcolumntype{Y}{F.,{3,2}{}}
 \title{\texttt{gbt9704} 宏包使用说明 \\ (v0.1 Beta)}
 \author{Wupei Song \\ \small{\url{songwupei@163.com}}}
 \date{2026年6月22日}
@@ -62,6 +64,84 @@ xelatex gbt9704-doc.tex
 
 \subsection{附注}
 \notes{此件公开发布}
+
+\section{表格中的数字格式化}
+
+公文中的财务报表（预算表、决算表、收支明细等）需要对金额数字进行千位分隔和小数点对齐。
+推荐使用 \texttt{fcolumn} 宏包配合本类使用。
+
+\subsection{导言区配置}
+在文档导言区加载 \texttt{fcolumn} 并定义金额列类型：
+\begin{verbatim}
+\usepackage[strict]{fcolumn}
+\newcolumntype{Y}{F.,{3,2}{}}  % 等同于预定义的 f 列类型
+\end{verbatim}
+
+其中：
+\begin{description}
+  \item[\texttt{strict}] 让负数显示为财务括号格式 \texttt{(123.45)}。
+  \item[\texttt{Y}] 金额列：3位千位分隔，2位小数。输入时以 \texttt{,} 作小数点（欧洲记法），输出自动加 \texttt{.} 作千位分隔。
+\end{description}
+
+注：\texttt{fcolumn} 默认使用欧洲数字格式（逗号作小数点）。
+如需用句点 \texttt{.} 作小数点输入，可改用 \texttt{siunitx} 宏包：
+\begin{verbatim}
+\usepackage{siunitx}
+\sisetup{group-separator={,}, group-minimum-digits=4}
+% 表格中用 S[table-format=7.2] 列类型
+\end{verbatim}
+
+\subsection{示例：一般公共预算支出表}
+\begin{verbatim}
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    一般公共服务 & 123.456,78 \\
+    教育支出     & 98.765,43 \\
+    社会保障     & 56.789,12 \\
+    \midrule
+    \sumline{金额（万元）} \\
+    \bottomrule
+\end{tabular}
+\end{verbatim}
+
+编译效果如下（自动千位分隔、小数对齐、求和）：
+
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    一般公共服务 & 123.456,78 \\
+    教育支出     & 98.765,43 \\
+    社会保障     & 56.789,12 \\
+    \midrule
+    \sumline{金额（万元）} \\
+    \bottomrule
+\end{tabular}
+
+\vspace{1em}
+\begin{description}
+  \item[\texttt{\textbackslash sumline\{...\}}] 自动计算该列总和，并在上方绘制横线（默认2pt），第一列显示标签文本。
+\end{description}
+
+\subsection{负数处理}
+启用 \texttt{strict} 选项后，负数值会自动以括号格式显示：
+
+\begin{verbatim}
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    收入合计  & 50.000,00 \\
+    减：支出  & -32.000,00 \\
+    \midrule
+    \sumline{结余} \\
+    \bottomrule
+\end{tabular}
+\end{verbatim}
+
+注意：\texttt{fcolumn} 必须单独在用户文档中加载，\texttt{gbt9704.cls} 不内置该包（保持职责分离）。
 
 \section{字体依赖说明}
 若系统未安装"方正大标宋（FZDaBiaoSong-B06）"字体，宏包将自动回退至"黑体（SimHei）"并启用伪粗体，编译时会在终端显示警告信息，但不影响红头排版效果。

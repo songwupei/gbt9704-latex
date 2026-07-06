@@ -58,6 +58,18 @@ MAIN COMMANDS
 * \seprule             - Separator line for page footer area
 * \notes{...}          - Notes in parentheses
 
+RECOMMENDED COMPANION PACKAGES
+------------------------------
+The following packages are recommended for use with gbt9704
+(load them in your document preamble, not in the class file):
+
+* fcolumn (v1.5+) — Financial table typesetting with automatic
+  thousand separators, decimal alignment, and \sumline.
+  Example: \usepackage[strict]{fcolumn}
+           \newcolumntype{Y}{F.,{3,2}{}}
+  Note: fcolumn uses European input format (, as decimal).
+  For Chinese .-decimal input, consider siunitx as an alternative.
+
 KNOWN ISSUES / LIMITATIONS
 --------------------------
 * This is a Beta release. Command names and interfaces may change

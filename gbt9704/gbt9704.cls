@@ -1,29 +1,44 @@
 % ==================================================
-%  gbt9704.cls  v0.1 20260622
+%  gbt9704.cls  v0.1.1 20260706
 %  SPDX-License-Identifier: LPPL-1.3c
 %  基于 memoir 文档类，符合 GB/T 9704-2012 公文格式标准
-%  当前状态: Beta - 欢迎反馈
 % ==================================================
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gbt9704}[2026-06-22 v0.1 GB/T 9704-2012 Document Class (Beta)]
+\ProvidesClass{gbt9704}[2026-07-06 v0.1.1 GB/T 9704-2012 Document Class]
 
 % ------------------ 选项处理 ------------------
 \newif\if@gbt@redline
 \@gbt@redlinefalse
 \newif\if@gbt@titleindent
 \@gbt@titleindenttrue  % 默认开启缩进（符合国标）
+\newif\if@gbt@zhlineskip
+\@gbt@zhlineskipfalse
 
 \DeclareOption{redline}{\@gbt@redlinetrue}
 \DeclareOption{noredline}{\@gbt@redlinefalse}
 \DeclareOption{titleindent}{\@gbt@titleindenttrue}
 \DeclareOption{notitleindent}{\@gbt@titleindentfalse}
+\DeclareOption{zhlineskip}{\@gbt@zhlineskiptrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
 \ProcessOptions\relax
 
 % ------------------ 基础类与中文 ------------------
 \LoadClass[article, a4paper, 12pt, oneside]{memoir}
 \RequirePackage[UTF8, scheme=plain, heading=true, fontset=none]{ctex}
+
+% ------------------ zhlineskip 行距支持 ------------------
+% GB/T 9704 要求正文三号（16pt）行距 28pt
+%   bodytextleadingratio = 28pt / 16pt = 1.75
+%   数学公式恢复西文行距（restoremathleading）
+\if@gbt@zhlineskip
+  \RequirePackage[
+    bodytextleadingratio = 1.75,
+    footnoteleadingratio = 1.75,
+    restoremathleading,
+    quiet
+  ]{zhlineskip}
+\fi
 
 % ------------------ 字体回退机制（修复致命依赖） ------------------
 \RequirePackage{fontspec}
@@ -110,10 +125,10 @@
 
   % 一级标题（黑体）
   \setsecheadstyle{\zihao{3}\heiti\raggedright}%
-  % 二级标题（楷体）
-  \setsubsecheadstyle{\zihao{3}\kaishu\raggedright}%
-  % 三级标题（仿宋）
-  \setsubsubsecheadstyle{\zihao{3}\normalfont\raggedright}%
+  % 二级标题（楷体加粗）
+  \setsubsecheadstyle{\zihao{3}\kaishu\bfseries\raggedright}%
+  % 三级标题（仿宋加粗）
+  \setsubsubsecheadstyle{\zihao{3}\normalfont\bfseries\raggedright}%
 }
 
 % ------------------ 公文组件命令 ------------------
@@ -156,10 +171,10 @@
 }
 
 \newcommand{\signature}[1]{%
-  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\flushright #1\endflushright\endgroup
+  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\flushright #1\hspace{2\ccwd}\endflushright\endgroup
 }
 \newcommand{\signdate}[1]{%
-  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\flushright #1\endflushright\endgroup
+  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\flushright #1\hspace{2\ccwd}\endflushright\endgroup
 }
 \newcommand{\notes}[1]{%
   \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\noindent （#1）\par\endgroup
