@@ -1,6 +1,6 @@
 Package: gbt9704
-Version: 0.1.1
-Date: 2026-07-06
+Version: 0.1.3
+Date: 2026-07-28
 License: LPPL-1.3c
 
 ========================================
@@ -15,17 +15,25 @@ government organs).
 
 REQUIREMENTS
 ------------
-* TeX Live 2020 or later (XeLaTeX required)
+* TeX Live 2020 or later (LuaLaTeX recommended)
 * CTEX package (included in TeX Live)
 * memoir class (included in TeX Live)
+* Required LaTeX packages (all in TeX Live):
+  - iftex, fontspec, xcolor, graphicx, array, booktabs, longtable,
+    caption, subcaption, ulem, alltt, indentfirst, fcolumn
+* Required: bxcoloremoji + twemojis for colored emoji (LuaLaTeX).
+  Install via: tlmgr install bxcoloremoji twemojis
+  The emoji are rendered as colored PDF vector graphics — no emoji
+  system fonts required. When using XeLaTeX, falls back to system
+  emoji fonts (Segoe UI Emoji or NotoEmoji).
 * Fonts:
-  - FangSong, SimHei, KaiTi, SimSun (standard Windows fonts)
+  - FangSong, SimHei, KaiTi, SimSun (standard Windows/Chinese fonts)
   - FZDaBiaoSong-B06 (FangZheng DaBiaoSong) for red headers.
     If not installed, the class will automatically fall back
     to SimHei with fake bold, with a warning message.
+  - Sarasa Mono SC (CJK monospace) + DejaVu Sans Mono (box-drawing)
 * Optional: zhlineskip (2026/06/30+) for CJK-aware line spacing
-  control with independent bodytext/footnote/math leading.
-  Install via: tlmgr install zhlineskip
+  control. Install via: tlmgr install zhlineskip
 
 OPTIONS
 -------
@@ -36,6 +44,9 @@ OPTIONS
 * zhlineskip : Enable zhlineskip package for CJK-aware proportional
   line spacing. Sets bodytextleadingratio=1.75 (28pt/16pt) and
   restores Western math leading. (Default: off)
+* emoji / noemoji : Enable/disable emoji support. (Default: emoji)
+  - LuaLaTeX: colored PDF vector graphics via bxcoloremoji→twemojis.
+  - XeLaTeX: black-and-white via Segoe UI Emoji / NotoEmoji font fallback.
 
 USAGE EXAMPLE
 -------------
@@ -66,6 +77,11 @@ MAIN COMMANDS
 * \copyto{...}           - CC list (no indent, "抄送：" prefix)
 * \issueinfo{Org}{Date}  - Issuing organ and date (left+right)
 * \seprule               - Separator line for page footer area
+* \emoji{...}            - Insert a colored emoji (LuaLaTeX only). Uses
+                           bxcoloremoji → twemojis pipeline: each emoji
+                           is a colored PDF vector graphic. Example:
+                           \emoji{👍} renders as 👍. No system emoji
+                           font required. Use 'noemoji' option to disable.
 
 HEADING FORMATS (GB/T 9704-2012)
 ---------------------------------
@@ -75,24 +91,18 @@ HEADING FORMATS (GB/T 9704-2012)
 
 RECOMMENDED COMPANION PACKAGES
 ------------------------------
-The following packages are recommended for use with gbt9704
-(load them in your document preamble, not in the class file):
-
-* fcolumn (v1.5+) — Financial table typesetting with automatic
-  thousand separators, decimal alignment, and \sumline.
-  Example: \usepackage[strict]{fcolumn}
-           \newcolumntype{Y}{F.,{3,2}{}}
-  Note: fcolumn uses European input format (, as decimal).
-  For Chinese .-decimal input, consider siunitx as an alternative.
-
 * zhlineskip (2026/06/30+) — CJK-aware proportional line spacing
   with independent bodytext/footnote/math leading control.
   Built-in support via the zhlineskip class option.
+  Install via: tlmgr install zhlineskip
 
 KNOWN ISSUES / LIMITATIONS
 --------------------------
-* The class relies on XeLaTeX; pdflatex is not supported due to
-  font encoding requirements.
+* The class requires LuaLaTeX (recommended) or XeLaTeX; pdflatex is not
+  supported due to font encoding requirements.
+* Colored emoji (\emoji{}) requires LuaLaTeX. Uses bxcoloremoji→twemojis
+  pipeline (PDF vector graphics), not system emoji fonts. Emoji inside
+  verbatim environments will not render — use \emoji{} outside verbatim.
 
 INSTALLATION
 ------------
@@ -100,8 +110,8 @@ Copy gbt9704.cls to:
 $TEXMF/tex/latex/gbt9704/
 or simply place it in the same folder as your .tex file.
 
-Compile with XeLaTeX:
-xelatex document.tex
+Compile with LuaLaTeX:
+lualatex document.tex
 
 CONTRIBUTION & FEEDBACK
 -----------------------
@@ -111,6 +121,26 @@ or email: songwupei@163.com
 
 CHANGELOG
 ---------
+v0.1.3 (2026-07-28) - Dual-engine emoji and financial tables.
+- Unified cls supports both LuaLaTeX (colored vectors) and XeLaTeX (font fallback).
+- Dual-engine emoji: bxcoloremoji→twemojis (LuaLaTeX) or Segoe UI Emoji/NotoEmoji (XeLaTeX).
+- Built-in financial table support via fcolumn package (C and N column types).
+- Added gongwenbody environment and \setgongwenlinespread command.
+- New dependencies: fcolumn, alltt, Sarasa Mono SC, DejaVu Sans Mono.
+- Font fallback for FZDaBiaoSong (graceful degradation to SimHei).
+- Memoir-native title indent via \setsecindent (cleaner, hyperref-compatible).
+- Soul/ulem CJK compatibility fix in \AtBeginDocument.
+
+v0.1.2 (2026-07-28) - Engine upgrade and colored emoji support.
+- Switch primary engine from XeLaTeX to LuaLaTeX.
+- Add colored emoji support via bxcoloremoji → twemojis pipeline:
+  each emoji renders as a colored PDF vector graphic (no system
+  emoji fonts required). Uses TeX \number + Lua dec-to-hex
+  conversion to bridge Unicode input to twemojis name lookup.
+- Add \emoji{<character>} command and noemoji class option.
+- Update documentation: two-column code/render layout for all
+  emoji examples (verbatim+emoji incompatibility resolved).
+
 v0.1.1 (2026-07-06) - Feature update.
 - Add zhlineskip class option for CJK-aware proportional line spacing
   (bodytextleadingratio=1.75, footnoteleadingratio=1.75,
