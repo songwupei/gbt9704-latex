@@ -1,6 +1,6 @@
 Package: gbt9704
-Version: 0.1.3
-Date: 2026-07-28
+Version: 0.1.4
+Date: 2026-07-29
 License: LPPL-1.3c
 
 ========================================
@@ -121,6 +121,13 @@ or email: songwupei@163.com
 
 CHANGELOG
 ---------
+v0.1.4 (2026-07-29) - Section numbering and ctex heading integration.
+- Section numbering: Chinese numerals (一、（一）、1.) per GB/T 9704-2012.
+- Switched heading styles from memoir \setsecheadstyle to ctex \ctexset for
+  correct font rendering with heading=true.
+- Fixed attachment spacing: removed extra \vspace between attachment items.
+- Various documentation fixes and cleanup.
+
 v0.1.3 (2026-07-28) - Dual-engine emoji and financial tables.
 - Unified cls supports both LuaLaTeX (colored vectors) and XeLaTeX (font fallback).
 - Dual-engine emoji: bxcoloremoji→twemojis (LuaLaTeX) or Segoe UI Emoji/NotoEmoji (XeLaTeX).
