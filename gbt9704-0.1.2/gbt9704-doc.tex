@@ -1,0 +1,278 @@
+% !TeX program = lualatex
+\documentclass[redline, titleindent, zhlineskip]{gbt9704}
+\usepackage{hyperref}
+\usepackage[strict]{fcolumn}
+\newcolumntype{Y}{F.,{3,2}{}}
+\title{\texttt{gbt9704} 宏包使用说明 \\ (v0.1.2)}
+\author{Wupei Song \\ \small{\url{songwupei@163.com}}}
+\date{2026年7月28日}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{概述}
+本宏包 \texttt{gbt9704} 基于 \texttt{memoir} 文档类，严格遵循 \textbf{GB/T 9704-2012}《党政机关公文格式》标准，实现了红头文件、标题分级、附件、版记等公文的自动化排版。
+
+当前版本为 \textbf{v0.1.2}，核心功能已可用，欢迎反馈问题与改进建议。
+
+\section{编译方式}
+本宏包依赖 \texttt{ctex} 宏包处理中文，推荐使用 \textbf{LuaLaTeX} 引擎编译（彩色 Emoji 等特性需要 LuaLaTeX + HarfBuzz 支持）：
+\begin{verbatim}
+lualatex gbt9704-doc.tex
+\end{verbatim}
+
+\section{宏包选项}
+\begin{description}
+  \item[redline] 在公文红头下方绘制红色分隔线。
+  \item[noredline] 不绘制红色分隔线（默认）。
+  \item[titleindent] 章节标题首行缩进2字符（默认，符合国标）。
+  \item[notitleindent] 章节标题取消首行缩进。
+  \item[zhlineskip] 启用 \texttt{zhlineskip} 宏包，提供 CJK 感知的比例行距控制（正文 1.75 倍字号、脚注独立比例、数学恢复西文行距）。需 TeX Live 2026 或手动安装。
+  \item[noemoji] 禁用彩色 Emoji 支持（默认启用，需 LuaLaTeX + HarfBuzz）。
+\end{description}
+
+\section{核心命令示例}
+
+\subsection{标题与正文}
+使用 \verb|\title{...}| 和 \verb|\maketitle| 输出大标题（二号大标宋，居中）：
+\verb|\gongwensubtitle{...}| 可输出副标题（三号仿宋，居中）。
+
+正文环境自动设置为三号仿宋、28磅行距、首行缩进2字符。
+
+\subsection{附件处理}
+单附件使用 \verb|\attachmentHZ{文件名}|（自动带"附件："前缀）：
+\attachmentHZ{2026年度工作计划表}
+
+如需不带前缀，使用 \verb|\attachmentNOHZ{...}|。
+
+多附件使用 \texttt{attachments} 环境（首项紧跟"附件："，后续项自动对齐）：
+\begin{attachments}
+\attachmentitem{1. 财务报表附件}
+\attachmentitem{2. 人员名单附件}
+\attachmentitem{3. 会议纪要附件}
+\end{attachments}
+
+\subsection{发文机关与日期}
+\signature{中华人民共和国某部}
+\signdate{2026年6月22日}
+
+\subsection{版记要素}
+\seprule
+\copyto{各省、自治区、直辖市人民政府办公厅，国务院各部委。}
+\issueinfo{某部办公厅}{2026年6月22日印发}
+
+\subsection{附注}
+\notes{此件公开发布}
+
+\section{表格中的数字格式化}
+
+公文中的财务报表（预算表、决算表、收支明细等）需要对金额数字进行千位分隔和小数点对齐。
+推荐使用 \texttt{fcolumn} 宏包配合本类使用。
+
+\subsection{导言区配置}
+在文档导言区加载 \texttt{fcolumn} 并定义金额列类型：
+\begin{verbatim}
+\usepackage[strict]{fcolumn}
+\newcolumntype{Y}{F.,{3,2}{}}  % 等同于预定义的 f 列类型
+\end{verbatim}
+
+其中：
+\begin{description}
+  \item[\texttt{strict}] 让负数显示为财务括号格式 \texttt{(123.45)}。
+  \item[\texttt{Y}] 金额列：3位千位分隔，2位小数。输入时以 \texttt{,} 作小数点（欧洲记法），输出自动加 \texttt{.} 作千位分隔。
+\end{description}
+
+注：\texttt{fcolumn} 默认使用欧洲数字格式（逗号作小数点）。
+如需用句点 \texttt{.} 作小数点输入，可改用 \texttt{siunitx} 宏包：
+\begin{verbatim}
+\usepackage{siunitx}
+\sisetup{group-separator={,}, group-minimum-digits=4}
+% 表格中用 S[table-format=7.2] 列类型
+\end{verbatim}
+
+\subsection{示例：一般公共预算支出表}
+\begin{verbatim}
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    一般公共服务 & 123.456,78 \\
+    教育支出     & 98.765,43 \\
+    社会保障     & 56.789,12 \\
+    \midrule
+    \sumline{金额（万元）} \\
+    \bottomrule
+\end{tabular}
+\end{verbatim}
+
+编译效果如下（自动千位分隔、小数对齐、求和）：
+
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    一般公共服务 & 123.456,78 \\
+    教育支出     & 98.765,43 \\
+    社会保障     & 56.789,12 \\
+    \midrule
+    \sumline{金额（万元）} \\
+    \bottomrule
+\end{tabular}
+
+\vspace{1em}
+\begin{description}
+  \item[\texttt{\textbackslash sumline\{...\}}] 自动计算该列总和，并在上方绘制横线（默认2pt），第一列显示标签文本。
+\end{description}
+
+\subsection{负数处理}
+启用 \texttt{strict} 选项后，负数值会自动以括号格式显示：
+
+\begin{verbatim}
+\begin{tabular}{lY}
+    \toprule
+    项目 & 金额（万元） \\
+    \midrule
+    收入合计  & 50.000,00 \\
+    减：支出  & -32.000,00 \\
+    \midrule
+    \sumline{结余} \\
+    \bottomrule
+\end{tabular}
+\end{verbatim}
+
+注意：\texttt{fcolumn} 必须单独在用户文档中加载，\texttt{gbt9704.cls} 不内置该包（保持职责分离）。
+
+\section{字体依赖说明}
+若系统未安装"方正大标宋（FZDaBiaoSong-B06）"字体，宏包将自动回退至"黑体（SimHei）"并启用伪粗体，编译时会在终端显示警告信息，但不影响红头排版效果。
+
+建议安装方正大标宋以获得最佳视觉效果。
+
+\section{Emoji 支持}
+
+\subsection{简介}
+本宏包内置彩色 Emoji 支持，需使用 \textbf{LuaLaTeX} 引擎编译（利用 HarfBuzz 渲染器实现 COLR/CPAL 彩色字形输出）。
+
+公文写作中适当使用 Emoji（如状态标记、进度报告、流程图等）可以提升文档的可读性和视觉表达力。
+
+\subsection{字体自动检测}
+Emoji 字体按以下优先级自动检测，取首个可用字体：
+\begin{enumerate}
+  \item \texttt{Noto Color Emoji}（Linux，开源，\textbf{推荐安装}）
+  \item \texttt{Apple Color Emoji}（macOS，系统内置）
+  \item \texttt{Segoe UI Emoji}（Windows，系统内置）
+\end{enumerate}
+
+Linux 下安装 Noto Color Emoji：
+\begin{verbatim}
+# Debian / Ubuntu
+sudo apt install fonts-noto-color-emoji
+
+# Arch Linux
+sudo pacman -S noto-fonts-emoji
+\end{verbatim}
+
+\subsection{基本用法}
+
+使用 \verb|\emoji| 命令插入彩色 Emoji，LaTeX 源码与渲染效果对照如下：
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{p{6.5cm} p{4.5cm}}
+\toprule
+\multicolumn{1}{c}{\textbf{LaTeX 源码}} & \multicolumn{1}{c}{\textbf{渲染效果}} \\
+\midrule
+\raggedright
+\texttt{\textbackslash emoji\{}\emoji{👍}\texttt{\}}\ \
+\texttt{\textbackslash emoji\{}\emoji{🎉}\texttt{\}}\ \
+\texttt{\textbackslash emoji\{}\emoji{📄}\texttt{\}}\ \
+\texttt{\textbackslash emoji\{}\emoji{✅}\texttt{\}}
+& \emoji{👍} \emoji{🎉} \emoji{📄} \emoji{✅} \\[4pt]
+\bottomrule
+\end{tabular}
+\end{center}
+
+若未安装 Emoji 字体，可使用 \texttt{noemoji} 选项禁用，编译时会有警告提示：
+\begin{verbatim}
+\documentclass[noemoji]{gbt9704}
+\end{verbatim}
+
+\subsection{常用 Emoji 分类展示}
+
+以下表格列出常用 Emoji 在 LuaLaTeX + HarfBuzz 下的彩色渲染效果：
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+类别 & Emoji（彩色渲染） & 对应命令 \\
+\midrule
+手势符号 & \emoji{👍} \emoji{👏} \emoji{🤝} \emoji{👋} & \texttt{\textbackslash emoji}\{\emoji{👍}\} \\
+状态标记 & \emoji{✅} \emoji{❌} \emoji{⚠} \emoji{🚫} \emoji{ℹ} & \texttt{\textbackslash emoji}\{\emoji{✅}\} \\
+办公文档 & \emoji{📄} \emoji{📝} \emoji{📊} \emoji{📋} \emoji{📌} & \texttt{\textbackslash emoji}\{\emoji{📄}\} \\
+交通指示 & \emoji{🚀} \emoji{🟢} \emoji{🔴} \emoji{🟡} \emoji{🏁} & \texttt{\textbackslash emoji}\{\emoji{🚀}\} \\
+工具符号 & \emoji{🔍} \emoji{🔒} \emoji{🔑} \emoji{⭐} \emoji{💡} & \texttt{\textbackslash emoji}\{\emoji{🔍}\} \\
+表情心情 & \emoji{😀} \emoji{🤔} \emoji{🎉} \emoji{🔥} \emoji{💪} & \texttt{\textbackslash emoji}\{\emoji{😀}\} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{在表格中使用 Emoji}
+
+Emoji 可以直接嵌入表格列中，与普通文字混排。LaTeX 源码与渲染效果对照如下：
+
+\begin{center}
+\begin{minipage}[t]{0.52\textwidth}
+\raggedright\small\ttfamily
+\textbackslash begin\{tabular\}\{cll\}\newline
+\ \ \textbackslash toprule\newline
+\ \ 优先级\ \&\ 状态\ \&\ 说明\ \textbackslash\textbackslash\newline
+\ \ \textbackslash midrule\newline
+\ \ \textbackslash emoji\{\emoji{🔴}\}\ 高\ \&\ \textbackslash texttt\{critical\}\ \&\ 紧急处理\ \textbackslash\textbackslash\newline
+\ \ \textbackslash emoji\{\emoji{🟡}\}\ 中\ \&\ \textbackslash texttt\{pending\}\ \&\ 待审核\ \textbackslash\textbackslash\newline
+\ \ \textbackslash emoji\{\emoji{🟢}\}\ 低\ \&\ \textbackslash texttt\{done\}\ \&\ 已完成\ \textbackslash\textbackslash\newline
+\ \ \textbackslash bottomrule\newline
+\textbackslash end\{tabular\}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.40\textwidth}
+\centering
+\begin{tabular}{cll}
+\toprule
+优先级 & 状态 & 说明 \\
+\midrule
+\emoji{🔴} 高 & \texttt{critical} & 紧急处理 \\
+\emoji{🟡} 中 & \texttt{pending}  & 待审核 \\
+\emoji{🟢} 低 & \texttt{done}     & 已完成 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsection{技术说明}
+\begin{itemize}
+  \item Emoji 底层使用 \texttt{bxcoloremoji} → \texttt{twemojis} 渲染管线，输出 PDF 彩色矢量图形（非字体字形），确保跨 PDF 查看器的色彩一致性。
+  \item 在 XeLaTeX 下编译时，Emoji 功能自动禁用（\texttt{bxcoloremoji} 仅支持 LuaLaTeX），不影响其他功能正常使用。
+  \item Emoji 通过 PDF XObject（矢量表单）嵌入，不会覆盖正文的中/西文字体设置。
+  \item 如需在 \texttt{verbatim} 或 \texttt{lstlisting} 等等宽环境中显示 Emoji，请使用 \verb|\emoji{}| 命令而非直接输入字符。
+\end{itemize}
+
+\section{已知问题与限制}
+\begin{itemize}
+  \item 当前为 Beta 版本，命令名称和接口可能在后续版本中调整。
+  \item 推荐使用 LuaLaTeX 引擎，不支持 pdfLaTeX。XeLaTeX 仍可使用，但彩色 Emoji 等功能需要 LuaLaTeX + HarfBuzz。
+  \item 对超长标题（超过一行）的自动换行处理有待优化。
+\end{itemize}
+
+\section{许可证}
+本宏包采用 \textbf{LPPL-1.3c} 许可证发布。
+
+\section{反馈与贡献}
+欢迎通过以下方式提交问题或改进建议：
+\begin{itemize}
+  \item Issue: \url{https://codeberg.org/songwupei/latex-gbt9704/issues}
+  \item 邮箱: \url{songwupei@163.com}
+\end{itemize}
+
+\end{document}

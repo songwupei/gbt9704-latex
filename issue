@@ -1,7 +1,0 @@
-1-兼容 2026 年 6 月更新至 v1.0g 的 zhlineskip 宏包，由张瑞熹、夏明宇开发，专为中日韩横排文档打造，一次性打通上述全部行距痛点，是目前 CTAN 唯一支持 文字/数学/脚注三分独立行距 的 CJK 专用工具。
-
-地址：https://www.ctan.org/pkg/zhlineskip
-
-2-更新readme
-3-项目地址换到 codeburg.org
-
