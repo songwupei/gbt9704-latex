@@ -90,12 +90,10 @@
   \setsansfont{Arial}
   \setmonofont{Consolas}
 
-  % --- 数学字体（匹配 Times） ---
-  \IfFileExists{newtxmath.sty}{%
-    \RequirePackage{newtxmath}
-  }{%
-    \ClassWarning{gbt9704}{newtxmath not found, using default math fonts}
-  }
+  % --- 数学字体 ---
+  % LuaLaTeX 下 newtxmath 可能冲突，公文场景极少数学公式
+  % 使用默认 Latin Modern Math（与 Times New Roman 的 x-height 接近）
+  \IfFileExists{amsmath.sty}{\RequirePackage{amsmath}}{}
 
   % --- 字体切换命令 ---
   \newcommand{\gbt@redheadfont}{\CJKfamily{xiaobiaosong}}
