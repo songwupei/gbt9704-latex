@@ -65,8 +65,8 @@ def generate(json_path: str) -> str:
         model = spec.get("model", "RGB")
         vals = spec.get("value", [0, 0, 0])
         val_str = ",".join(str(v) for v in vals)
-        lines.append(def_latex(f"gbt@layout@color@{key}@model", model))
-        lines.append(def_latex(f"gbt@layout@color@{key}@value", val_str))
+        lines.append(def_latex(f"gbt@layout@color@{_to_camel(key)}@model", model))
+        lines.append(def_latex(f"gbt@layout@color@{_to_camel(key)}@value", val_str))
 
     # ── Section-based parameters ──
     sections = [
