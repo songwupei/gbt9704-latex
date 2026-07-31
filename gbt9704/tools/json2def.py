@@ -92,8 +92,51 @@ def generate(json_path: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def generate_lua(json_path: str) -> str:
+    """Generate a Lua module that returns the parsed JSON as a table."""
+    data = json.loads(Path(json_path).read_text(encoding="utf-8"))
+    lines = [
+        "-- gbt9704-layout.lua — auto-generated from gbt9704-layout.json",
+        "-- DO NOT EDIT. Edit the JSON and regenerate.",
+        "-- Generator: tools/json2def.py --lua",
+        "return {",
+    ]
+
+    def _lua_val(v, indent=2):
+        prefix = " " * indent
+        if isinstance(v, dict):
+            result = ["{"]
+            for k, sv in v.items():
+                result.append(f'{prefix}["{k}"] = {_lua_val(sv, indent+2)},')
+            result.append(f'{" " * (indent-2)}}}')
+            return "\n".join(result)
+        elif isinstance(v, list):
+            items = ", ".join(repr(x) for x in v)
+            return "{" + items + "}"
+        elif isinstance(v, bool):
+            return "true" if v else "false"
+        elif isinstance(v, (int, float)):
+            return str(v)
+        else:
+            return repr(str(v))
+
+    for key, val in data.items():
+        if key == "$schema":
+            continue
+        lines.append(f'  ["{key}"] = {_lua_val(val, 4)},')
+
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: json2def.py <gbt9704-layout.json>", file=sys.stderr)
-        sys.exit(1)
-    print(generate(sys.argv[1]))
+    import argparse
+    parser = argparse.ArgumentParser(description="Generate .def or .lua from layout JSON")
+    parser.add_argument("json", help="Path to gbt9704-layout.json")
+    parser.add_argument("--lua", action="store_true", help="Output Lua module instead of LaTeX .def")
+    args = parser.parse_args()
+
+    if args.lua:
+        print(generate_lua(args.json))
+    else:
+        print(generate(args.json))
