@@ -240,7 +240,7 @@
 \def\gbt@layout@headerOrg@horizontalScale{0.75}
 \def\gbt@layout@headerOrg@spaceAbove{4cm}
 \def\gbt@layout@headerOrg@strokeWidth{0pt}
-\def\gbt@layout@headerNumber@fontSize{\zihao{-3}}
+\def\gbt@layout@headerNumber@fontSize{\zihao{3}}
 \def\gbt@layout@headerNumber@spaceAfterHeaderOrg{0.5cm}
 \def\gbt@layout@redline@thickness{1.5pt}
 \def\gbt@layout@redline@spaceBefore{0.1cm}
@@ -396,9 +396,9 @@
         \scalebox{\gbt@layout@headerOrg@horizontalScale}[1]{#1}}}%
     \vspace{\gbt@layout@headerNumber@spaceAfterHeaderOrg}
     \parbox{\textwidth}{\centering
-      \gbt@layout@headerNumber@fontSize\songti #2
+      \gbt@layout@headerNumber@fontSize\fangsong #2
       \\[0.2cm]
-      \gbt@layout@headerNumber@fontSize\fontsize{15pt}{20pt}\selectfont\fangsong #3}%
+      \gbt@layout@headerNumber@fontSize\fangsong #3}%
     \vspace{\gbt@layout@redline@spaceBefore}
     \if@gbt@redline
       \textcolor{chinese-red}{%
@@ -470,16 +470,16 @@
 }
 
 % 版记分隔线
-\newcommand{\seprule}{\noindent\rule{\textwidth}{0.5pt}\par}
+\newcommand{\seprule}{\noindent\rule{\textwidth}{1pt}\par}
 
 % 抄送机关
 \newcommand{\copyto}[1]{%
-  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\noindent 抄送：#1\par\endgroup
+  \begingroup\zihao{4}\setlength{\baselineskip}{28pt}\noindent 抄送：#1\par\endgroup
 }
 
 % 印发机关和印发日期
 \newcommand{\issueinfo}[2]{%
-  \begingroup\zihao{3}\setlength{\baselineskip}{28pt}\noindent #1\hfill #2\par\endgroup
+  \begingroup\zihao{4}\setlength{\baselineskip}{28pt}\noindent #1\hfill #2\par\endgroup
 }
 
 % ------------------ 正文环境 ------------------
@@ -497,8 +497,8 @@
 
 % ------------------ 页码格式 ------------------
 \makepagestyle{gongwen}
-\makeevenfoot{gongwen}{\gbt@layout@pageNumber@fontSize\thepage}{}{}
-\makeoddfoot{gongwen}{}{}{\gbt@layout@pageNumber@fontSize\thepage}
+\makeevenfoot{gongwen}{\gbt@layout@pageNumber@fontSize\songti\ —\ \thepage\ —}{}{}
+\makeoddfoot{gongwen}{}{}{\gbt@layout@pageNumber@fontSize\songti\ —\ \thepage\ —}
 \makeevenhead{gongwen}{}{}{}\makeoddhead{gongwen}{}{}{}
 \pagestyle{gongwen}
 

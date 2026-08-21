@@ -11,8 +11,8 @@
 \def\gbt@layout@headerOrg@spaceAbove{4cm}
 \def\gbt@layout@headerOrg@align{center}
 \def\gbt@layout@headerOrg@strokeWidth{0pt}
-\def\gbt@layout@headerNumber@fontSize{\zihao{-3}}
-\def\gbt@layout@headerNumber@fontSizePt{15}
+\def\gbt@layout@headerNumber@fontSize{\zihao{3}}
+\def\gbt@layout@headerNumber@fontSizePt{16}
 \def\gbt@layout@headerNumber@spaceAfterHeaderOrg{0.5cm}
 \def\gbt@layout@headerNumber@align{center}
 \def\gbt@layout@redline@thickness{1.5pt}
